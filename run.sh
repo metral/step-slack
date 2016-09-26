@@ -25,6 +25,9 @@ fi
 if [ -n "$DEPLOY" ]; then
   # its a deploy!
   export ACTION="deploy"
+  if [ -n "$WERCKER_DEPLOYTARGET_NAME" ]; then
+      export ACTION="$WERCKER_DEPLOYTARGET_NAME"
+  fi
   export ACTION_URL=$WERCKER_DEPLOY_URL
 else
   # its a build!
@@ -32,7 +35,8 @@ else
   export ACTION_URL=$WERCKER_BUILD_URL
 fi
 
-export MESSAGE="<$ACTION_URL|$ACTION> for $WERCKER_APPLICATION_NAME by $WERCKER_STARTED_BY has $WERCKER_RESULT on branch $WERCKER_GIT_BRANCH"
+export WERCKER_GIT_COMMIT_SHORT=$(echo "$WERCKER_GIT_COMMIT" | cut -c1-7)
+export MESSAGE="<$ACTION_URL|$ACTION> for $WERCKER_APPLICATION_NAME by $WERCKER_STARTED_BY has $WERCKER_RESULT on branch $WERCKER_GIT_BRANCH (<https://$WERCKER_GIT_DOMAIN/$WERCKER_GIT_OWNER/$WERCKER_GIT_REPOSITORY/commit/$WERCKER_GIT_COMMIT|$WERCKER_GIT_COMMIT_SHORT>)"
 export FALLBACK="$ACTION for $WERCKER_APPLICATION_NAME by $WERCKER_STARTED_BY has $WERCKER_RESULT on branch $WERCKER_GIT_BRANCH"
 export COLOR="good"
 
@@ -46,7 +50,7 @@ fi
 json="{"
 
 # channels are optional, dont send one if it wasnt specified
-if [ -n "$WERCKER_SLACK_NOTIFIER_CHANNEL" ]; then 
+if [ -n "$WERCKER_SLACK_NOTIFIER_CHANNEL" ]; then
     json=$json"\"channel\": \"#$WERCKER_SLACK_NOTIFIER_CHANNEL\","
 fi
 

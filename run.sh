@@ -32,7 +32,7 @@ if [ -n "$DEPLOY" ]; then
 else
   # its a build!
   export ACTION="build"
-  export ACTION_URL=$WERCKER_BUILD_URL
+  export ACTION_URL=$WERCKER_RUN_URL
 fi
 
 export WERCKER_GIT_COMMIT_SHORT=$(echo "$WERCKER_GIT_COMMIT" | cut -c1-7)

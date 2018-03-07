@@ -28,7 +28,7 @@ if [ -n "$DEPLOY" ]; then
   if [ -n "$WERCKER_DEPLOYTARGET_NAME" ]; then
       export ACTION="$WERCKER_DEPLOYTARGET_NAME"
   fi
-  export ACTION_URL=$WERCKER_DEPLOY_URL
+  export ACTION_URL=$WERCKER_RUN_URL
 else
   # its a build!
   export ACTION="build"
